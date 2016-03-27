@@ -14,8 +14,9 @@ get_script_dir () {
      echo "$DIR"
 }
 
-dir="$(get_script_dir)"
-cmd="ember-new"
+userWd=`pwd`
+shellDir="$(get_script_dir)"
+cmd="${shellDir}/../bin/ember-new"
 
-cd ${dir} && go build && mv src ${cmd} && chmod +x ${cmd} && ${dir}/${cmd} $@
+cd ${shellDir} && go build && mv src ${cmd} && cd ${userWd} && chmod +x ${cmd} && ${cmd} $@
 

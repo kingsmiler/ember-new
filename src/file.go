@@ -31,26 +31,26 @@ func getCurrentDirectory() string {
 	return strings.Replace(dir, "\\", "/", -1)
 }
 
-func copyFile(source string, dest string) (err error) {
-	sourcefile, err := os.Open(source)
+func copyFile(source string, target string) (err error) {
+	sourceFile, err := os.Open(source)
 	if err != nil {
 		return err
 	}
 
-	defer sourcefile.Close()
+	defer sourceFile.Close()
 
-	destfile, err := os.Create(dest)
+	targetFile, err := os.Create(target)
 	if err != nil {
 		return err
 	}
 
-	defer destfile.Close()
+	defer targetFile.Close()
 
-	_, err = io.Copy(destfile, sourcefile)
+	_, err = io.Copy(targetFile, sourceFile)
 	if err == nil {
-		sourceinfo, err := os.Stat(source)
+		sourceInfo, err := os.Stat(source)
 		if err != nil {
-			err = os.Chmod(dest, sourceinfo.Mode())
+			err = os.Chmod(target, sourceInfo.Mode())
 		}
 
 	}
@@ -58,17 +58,17 @@ func copyFile(source string, dest string) (err error) {
 	return
 }
 
-func copyDir(source string, dest string) (err error) {
+func copyDir(source string, target string) (err error) {
 
 	// get properties of source dir
-	sourceinfo, err := os.Stat(source)
+	sourceInfo, err := os.Stat(source)
 	if err != nil {
 		return err
 	}
 
 	// create dest dir
 
-	err = os.MkdirAll(dest, sourceinfo.Mode())
+	err = os.MkdirAll(target, sourceInfo.Mode())
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func copyDir(source string, dest string) (err error) {
 
 	for _, obj := range objects {
 		sourceFilePointer := source + "/" + obj.Name()
-		destinationFilePointer := dest + "/" + obj.Name()
+		destinationFilePointer := target + "/" + obj.Name()
 
 		if obj.IsDir() {
 			// create sub-directories - recursively
